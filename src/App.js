@@ -85,12 +85,14 @@ render(){
           <OperationButton 
             content="%"
             clickHandle = { () => {
-              let oldValue = this.state.currentCalculation;
+              let oldValue = this.state.currentCalculation;           
               oldValue = oldValue ? Object.values(oldValue) : []; //provjeravamo da li niz postoji
+              
+              if(oldValue.length !== 0){
               let lastItem = oldValue[oldValue.length -1] / 100;
               oldValue[oldValue.length -1] = lastItem;
-                this.setState({currentCalculation: oldValue})
-            }
+              this.setState({currentCalculation: oldValue})
+            }}
              } />   
           <OperationButton 
             classes='numOperators'
@@ -186,7 +188,12 @@ render(){
                 this.setState({calculationHistory: tempCalc})              
                 let resultNum = eval(tempCalc)
                 let resultString = String(resultNum)
-                this.setState({result: resultNum, currentCalculation: resultString})
+                this.setState({result: resultNum})
+
+                oldValue = []
+                oldValue.push(resultNum)
+                this.setState({currentCalculation: oldValue})
+
 
               } else {
                 window.alert("Invalid input!")
