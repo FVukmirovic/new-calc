@@ -87,7 +87,7 @@ render(){
             clickHandle = { () => {
               let oldValue = this.state.currentCalculation;           
               oldValue = oldValue ? Object.values(oldValue) : []; //provjeravamo da li niz postoji
-              
+
               if(oldValue.length !== 0){
               let lastItem = oldValue[oldValue.length -1] / 100;
               oldValue[oldValue.length -1] = lastItem;
@@ -186,7 +186,8 @@ render(){
                 let tempCalc = this.state.currentCalculation.join('')
                 let tempHistory = this.state.calculationHistory + tempCalc
                 this.setState({calculationHistory: tempCalc})              
-                let resultNum = eval(tempCalc)
+                let resultTemp = eval(tempCalc)
+                let resultNum = resultTemp.toFixed(2)
                 let resultString = String(resultNum)
                 this.setState({result: resultNum})
 
