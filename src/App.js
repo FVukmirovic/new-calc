@@ -187,7 +187,8 @@ render(){
                 let tempHistory = this.state.calculationHistory + tempCalc
                 this.setState({calculationHistory: tempCalc})              
                 let resultTemp = eval(tempCalc)
-                let resultNum = resultTemp.toFixed(2)
+                
+                let resultNum = (resultTemp % 1 !== 0) ? resultTemp.toFixed(2) : resultTemp
                 let resultString = String(resultNum)
                 this.setState({result: resultNum})
 
