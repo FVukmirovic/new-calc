@@ -35,10 +35,13 @@ handleButtonClick(clickedValue){
     oldValue.pop();
     oldValue[oldValue.length -1] = lastItem;
     //unosenje znaka ili tacke, ukoliko je zadnji element niza tacka/znak izbaciti ga
+  } else if(typeof lastItem === 'string' && typeof clickedValue === 'string'){
+    oldValue.pop();
+    oldValue.push(clickedValue);
+    // ne dozvoliti upis znaka ili tacke ako je niz prazan
+  } else if(oldValue.length === 0 && typeof clickedValue === 'string'){
+    return
   } else {
-    if(typeof lastItem === 'string' && typeof clickedValue === 'string'){
-      oldValue.pop();
-    }
     oldValue.push(clickedValue);
   }
     this.setState({
