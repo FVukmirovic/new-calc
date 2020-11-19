@@ -34,9 +34,9 @@ handleButtonClick(clickedValue){
     lastItem = parseFloat(String(secondLastItem) + String(lastItem) + String(clickedValue));
     oldValue.pop();
     oldValue[oldValue.length -1] = lastItem;
-    //unosenje onog sto je kliknuto
+    //unosenje znaka ili tacke, ukoliko je zadnji element niza tacka/znak izbaciti ga
   } else {
-    if(lastItem === '.' && clickedValue === '.'){
+    if(typeof lastItem === 'string' && typeof clickedValue === 'string'){
       oldValue.pop();
     }
     oldValue.push(clickedValue);
@@ -81,7 +81,13 @@ render(){
             }}} />             
           <OperationButton 
             content="%"
-            clickHandle = { () => this.handleButtonClick('%')
+            clickHandle = { () => {
+              let oldValue = this.state.currentCalculation;
+              oldValue = oldValue ? Object.values(oldValue) : []; //provjeravamo da li niz postoji
+              let lastItem = oldValue[oldValue.length -1] / 100;
+              oldValue[oldValue.length -1] = lastItem;
+                this.setState({currentCalculation: oldValue})
+            }
              } />   
           <OperationButton 
             classes='numOperators'
@@ -167,14 +173,21 @@ render(){
             classes = 'numEqual'
             content="0"
             clickHandle = { () => {
-              let tempCalc = this.state.currentCalculation.join('')
-              let tempHistory = this.state.calculationHistory + tempCalc
-              this.setState({calculationHistory: tempCalc})
-              //join('') spaja elemente niza u string bez , izmedju elemenata
-              let result = eval(tempCalc)
-              let resultString = String(result)
-              this.setState({result: result, currentCalculation: resultString})
-            }} 
+              let oldValue = this.state.currentCalculation;   
+
+              // Izbaci gresku ukoliko je niz prazan ili ukoliko poslednji clan nije broj
+              if(oldValue.length !== 0 && typeof oldValue[oldValue.length -1] === "number"){
+                //join('') spaja elemente niza u string bez , izmedju elemenata
+                let tempCalc = this.state.currentCalculation.join('')
+                let tempHistory = this.state.calculationHistory + tempCalc
+                this.setState({calculationHistory: tempCalc})              
+                let resultNum = eval(tempCalc)
+                let resultString = String(resultNum)
+                this.setState({result: resultNum, currentCalculation: resultString})
+
+              } else {
+                window.alert("Invalid input!")
+              }}} 
 
             />               
         </div>
