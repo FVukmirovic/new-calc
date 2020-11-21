@@ -27,7 +27,7 @@ handleButtonClick(clickedValue){
   let secondLastItem = oldValue[oldValue.length -2];
     //dodajemo broj u niz
   if(typeof lastItem === 'number' && typeof clickedValue === 'number'){
-    lastItem = parseInt(String(lastItem) + String(clickedValue));  
+    lastItem = parseFloat(String(lastItem) + String(clickedValue));  
     oldValue[oldValue.length -1] = lastItem;
     //spajanje 2 broja i tacke u jedan decimalan broj
   } else if (typeof lastItem === 'string' && typeof clickedValue === 'number' && lastItem === '.') {
@@ -88,8 +88,9 @@ render(){
               let oldValue = this.state.currentCalculation;           
               oldValue = oldValue ? Object.values(oldValue) : []; //provjeravamo da li niz postoji
 
-              if(oldValue.length !== 0){
+              if(oldValue.length !== 0 && typeof oldValue[oldValue.length -1] === 'number'){
               let lastItem = oldValue[oldValue.length -1] / 100;
+
               oldValue[oldValue.length -1] = lastItem;
               this.setState({currentCalculation: oldValue})
             }}
@@ -179,17 +180,14 @@ render(){
             content="0"
             clickHandle = { () => {
               let oldValue = this.state.currentCalculation;   
-
+              let tempCalc = this.state.currentCalculation.join('')
               // Izbaci gresku ukoliko je niz prazan ili ukoliko poslednji clan nije broj
-              if(oldValue.length !== 0 && typeof oldValue[oldValue.length -1] === "number"){
+              if(oldValue.length !== 0 && typeof oldValue[oldValue.length -1] === "number" && !tempCalc.includes('/0')){
                 //join('') spaja elemente niza u string bez , izmedju elemenata
-                let tempCalc = this.state.currentCalculation.join('')
-                let tempHistory = this.state.calculationHistory + tempCalc
+                
                 this.setState({calculationHistory: tempCalc})              
                 let resultTemp = eval(tempCalc)
-                
                 let resultNum = (resultTemp % 1 !== 0) ? resultTemp.toFixed(2) : resultTemp
-                let resultString = String(resultNum)
                 this.setState({result: resultNum})
 
                 oldValue = []
@@ -199,6 +197,7 @@ render(){
 
               } else {
                 window.alert("Invalid input!")
+                //this.setState({currentCalculation: "Invalid input"})
               }}} 
 
             />               
