@@ -65,6 +65,7 @@ button:active {
   overflow: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
+  user-select: none;
 }
 
 .one{
